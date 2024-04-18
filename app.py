@@ -1,9 +1,10 @@
 import pygame
-from app_content import NotesApp, DeductionEngineApp, DataSleuthApp, ComLinkApp  # Assuming TerminalApp is also defined
+from app_content import TerminalApp, DeductionEngineApp, DataSleuthApp, ComLinkApp, NotesApp 
 
 class App:
-    def __init__(self, image, position, screen, os_screen_rect, name, prolog):
+    def __init__(self, image, position, screen, os_screen_rect, name, prolog, app_manager):
         self.prolog = prolog
+        self.app_manager = app_manager
         self.image = image
         self.rect = self.image.get_rect(topleft=position)
         self.screen = screen
@@ -19,13 +20,14 @@ class App:
     def create_content(self, app_name):
         content_mapping = {
             'ComLink': ComLinkApp,
-            'Terminal': NotesApp,
+            'Terminal': TerminalApp,
             'Deduction Engine': DeductionEngineApp,
             'DataSleuth': DataSleuthApp,
+            'NotesApp': NotesApp,
         }
         content_class = content_mapping.get(app_name)
         if content_class:
-            return content_class(self.screen, self.rect, self.prolog)
+            return content_class(self.screen, self.rect, self.prolog, self.app_manager)
         else:
             raise ValueError(f"Unsupported app type: {app_name}")
 
@@ -69,3 +71,21 @@ class App:
 
     def close(self):
         self.visible = False
+
+class AppManager:
+    def __init__(self, apps):
+        self.apps = apps  # List of all app instances
+
+    def get_app(self, app_name):
+        # Iterate over the list of apps and return the app with the matching name
+        for app in self.apps:
+            if app.name == app_name:
+                return app
+        return None  # Return None if no app matches the name
+    
+    def open_app(self, app_to_open):
+        # Close all apps except the one to be opened
+        for app in self.apps:
+            app.visible = False
+        app_to_open.visible = True
+        app_to_open.show()  # Ensure the app is properly positioned and shown

@@ -4,7 +4,7 @@ import time
 class Icon:
     ICON_SIZE = (40, 40)
 
-    def __init__(self, image, app, position, screen, os_screen_rect, name):
+    def __init__(self, image, app, position, screen, os_screen_rect, name, app_manager):
         self.original_image = pygame.image.load(image).convert_alpha()
         self.image = pygame.transform.scale(self.original_image, self.ICON_SIZE)  # Resize icon image
         self.rect = self.image.get_rect(topleft=position)
@@ -13,12 +13,15 @@ class Icon:
         self.os_screen_rect = os_screen_rect
         self.name = name
         self.last_click_time = 0
+        self.app_manager = app_manager  # Reference to the app manager
+
+
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.rect.collidepoint(event.pos):
                 # Check for double click
                 if time.time() - self.last_click_time < 0.5:
-                    self.app.visible = True  # Make the app window visible
+                    self.app_manager.open_app(self.app)
                 self.last_click_time = time.time()
 
     def draw(self):

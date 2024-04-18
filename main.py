@@ -2,7 +2,7 @@ import cv2
 import pygame
 import numpy as np
 from pygame.locals import *
-from app import App  # Make sure to import the App class
+from app import App, AppManager
 from icon import Icon
 from pyswip import Prolog
 
@@ -10,12 +10,21 @@ from pyswip import Prolog
 # Initialize Pygame
 pygame.init()
 
+pygame.mixer.init()
+
+# Load and play background music
+pygame.mixer.music.load('background.mp3')
+pygame.mixer.music.play(-1) 
+
+pygame.display.set_caption('Quantum Echoes 2152')
+
+
 prolog = Prolog()
 
 prolog.consult('mystery_knowledge_base.pl')
 
 # Video setup
-video_path = 'backdrop.mov'  # Replace with your video file path
+video_path = 'backdrop.mov'  
 cap = cv2.VideoCapture(video_path)
 video_fps = cap.get(cv2.CAP_PROP_FPS)
 
@@ -24,7 +33,7 @@ window_size = (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_
 window = pygame.display.set_mode(window_size)
 
 # PNG overlay setup
-png_path = 'background_game.png'  # Replace with your PNG file path
+png_path = 'background_game.png' 
 overlay_image = pygame.image.load(png_path).convert_alpha()
 
 # Get the size of the PNG image
@@ -42,12 +51,12 @@ video_width = window_size[0] - 200
 video_height = int((window_size[1] / window_size[0]) * video_width)
 video_x = (window_size[0] - video_width + 20) // 2  # Center the video on the x-axis
 
-# Define the simulated OS screen area (adjust as needed)
+# Define the simulated OS screen area 
 screen_rect = pygame.Rect(290, 158, window_size[0] - 578, window_size[1] - 345)
-screen_color = (20, 20, 20)  # Dark grey for the OS screen
+screen_color = (20, 20, 20)  
 
 # Load custom cursor image
-cursor_image_path = 'cursor.png'  # Replace with your cursor PNG file path
+cursor_image_path = 'cursor.png'  
 cursor_image = pygame.image.load(cursor_image_path).convert_alpha()
 
 cursor_width = cursor_image.get_width() // 3
@@ -60,29 +69,20 @@ pygame.mouse.set_visible(False)
 
 app_window_image = pygame.image.load('window.png').convert_alpha()
 
-# # Initialize the App window (assuming 'window.png' is the app window image)
-# app_instance = App(app_window_image, (290, 158), window, screen_rect)
 
-# # Define a list to hold icons
-# icons = []
-
-# # Create icons and add them to the list
-# icons.append(Icon('notes.png', app_instance, (50, 50), window, screen_rect, 'App Name'))
-
-
-# List of app definitions
 apps = [
-    {'icon_path': 'notes.png', 'name': 'ComLink'},
+    {'icon_path': 'comlink.png', 'name': 'ComLink'},
     {'icon_path': 'deduction_engine.png', 'name': 'Deduction Engine'},
     {'icon_path': 'terminal.png', 'name': 'Terminal'},
     {'icon_path': 'search.png', 'name': 'DataSleuth'},
-    # Add more apps as needed
+    {'icon_path': 'notes.png', 'name': 'NotesApp'},
 ]
 
 
 # Define a list to hold icons and apps
 icons = []
 apps_instances = []
+app_manager = AppManager(apps_instances)
 
 icon_start_x = screen_rect.left + 10  # Start 10 pixels inside the screen_rect on the left
 icon_start_y = screen_rect.top + 10   # Start 10 pixels inside the screen_rect on the top
@@ -94,11 +94,11 @@ for index, app_def in enumerate(apps):
     position_x = icon_start_x + (index % icon_row_capacity) * icon_spacing
     position_y = icon_start_y + (index // icon_row_capacity) * icon_spacing
 
-    app_instance = App(pygame.image.load('window.png'), (290, 158), window, screen_rect, app_def['name'], prolog)
+    app_instance = App(pygame.image.load('window.png'), (290, 158), window, screen_rect, app_def['name'], prolog, app_manager)
     app_instance.visible = False  # Initially, app windows are not visible
     apps_instances.append(app_instance)
     
-    icon_instance = Icon(app_def['icon_path'], app_instance, (position_x, position_y), window, screen_rect, app_def['name'])
+    icon_instance = Icon(app_def['icon_path'], app_instance, (position_x, position_y), window, screen_rect, app_def['name'], app_manager)
     icons.append(icon_instance)
 
 
@@ -142,7 +142,7 @@ while running:
     # Get current mouse position
     mouse_x, mouse_y = pygame.mouse.get_pos()
 
-    # Constrain the mouse within the rectangle
+    # Constrain the mouse within the screen
     if not screen_rect.collidepoint(mouse_x, mouse_y):
         # Keep mouse within the screen rectangle
         new_mouse_x = min(max(mouse_x, screen_rect.left), screen_rect.right - cursor_image.get_width())
