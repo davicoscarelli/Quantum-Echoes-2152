@@ -13,7 +13,7 @@ pygame.init()
 pygame.mixer.init()
 
 # Load and play background music
-pygame.mixer.music.load('background.mp3')
+pygame.mixer.music.load('assets/background.mp3')
 pygame.mixer.music.play(-1) 
 
 pygame.display.set_caption('Quantum Echoes 2152')
@@ -24,7 +24,7 @@ prolog = Prolog()
 prolog.consult('mystery_knowledge_base.pl')
 
 # Video setup
-video_path = 'backdrop.mov'  
+video_path = 'assets/backdrop.mov'  
 cap = cv2.VideoCapture(video_path)
 video_fps = cap.get(cv2.CAP_PROP_FPS)
 
@@ -33,7 +33,7 @@ window_size = (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_
 window = pygame.display.set_mode(window_size)
 
 # PNG overlay setup
-png_path = 'background_game.png' 
+png_path = 'assets/background_game.png' 
 overlay_image = pygame.image.load(png_path).convert_alpha()
 
 # Get the size of the PNG image
@@ -56,7 +56,7 @@ screen_rect = pygame.Rect(290, 158, window_size[0] - 578, window_size[1] - 345)
 screen_color = (20, 20, 20)  
 
 # Load custom cursor image
-cursor_image_path = 'cursor.png'  
+cursor_image_path = 'assets/cursor.png'  
 cursor_image = pygame.image.load(cursor_image_path).convert_alpha()
 
 cursor_width = cursor_image.get_width() // 3
@@ -67,15 +67,15 @@ cursor_image = pygame.transform.scale(cursor_image, (cursor_width, cursor_height
 pygame.mouse.set_visible(False)
 
 
-app_window_image = pygame.image.load('window.png').convert_alpha()
+app_window_image = pygame.image.load('assets/window.png').convert_alpha()
 
 
 apps = [
-    {'icon_path': 'comlink.png', 'name': 'ComLink'},
-    {'icon_path': 'deduction_engine.png', 'name': 'Deduction Engine'},
-    {'icon_path': 'terminal.png', 'name': 'Terminal'},
-    {'icon_path': 'search.png', 'name': 'DataSleuth'},
-    {'icon_path': 'notes.png', 'name': 'NotesApp'},
+    {'icon_path': 'assets/comlink.png', 'name': 'ComLink'},
+    {'icon_path': 'assets/deduction_engine.png', 'name': 'Deduction Engine'},
+    {'icon_path': 'assets/terminal.png', 'name': 'Terminal'},
+    {'icon_path': 'assets/search.png', 'name': 'DataSleuth'},
+    {'icon_path': 'assets/notes.png', 'name': 'NotesApp'},
 ]
 
 
@@ -94,7 +94,7 @@ for index, app_def in enumerate(apps):
     position_x = icon_start_x + (index % icon_row_capacity) * icon_spacing
     position_y = icon_start_y + (index // icon_row_capacity) * icon_spacing
 
-    app_instance = App(pygame.image.load('window.png'), (290, 158), window, screen_rect, app_def['name'], prolog, app_manager)
+    app_instance = App(pygame.image.load('assets/window.png'), (290, 158), window, screen_rect, app_def['name'], prolog, app_manager)
     app_instance.visible = False  # Initially, app windows are not visible
     apps_instances.append(app_instance)
     

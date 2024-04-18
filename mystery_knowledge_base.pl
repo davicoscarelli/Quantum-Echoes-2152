@@ -84,10 +84,10 @@ list_facts :-
 :- dynamic article/4.
 
 % People profiles
-person('Dr. Vostok', 'Vostok Lab', ['vostok', 'neural networks', 'vostok_lab'], '2102-04-25', 'Moscow', 'vostok@vostok_lab.com', 'PrevTech Co.', 'vostok.png', '').
-person('Alex Hargrave', 'Vostok Lab', ['alex', 'quantum computing', 'vostok_lab'], '1225-08-15', 'San Francisco', 'alex@vostok_lab.com', 'Pinnacle Tech', 'alex.png', 'Known for corporate espionage                -Detected Inference Type: espionage-').
-person('Dr. Lydia Grant', 'Vostok Lab', ['lydia', 'robotics', 'vostok_lab'], '2098-06-12', 'New York', 'lydia@futuretech.com', 'CyberDynamics', 'lydia.png', '').
-person('John', 'Pinnacle Tech', ['john', 'cybersecurity', 'networking'], '2092-07-03', 'London', 'john@pinnacle.com', 'NetSecure', 'john.png', '').
+person('Dr. Vostok', 'Vostok Lab', ['vostok', 'neural networks', 'vostok_lab'], '2102-04-25', 'Moscow', 'vostok@vostok_lab.com', 'PrevTech Co.', 'assets/vostok.png', '').
+person('Alex Hargrave', 'Vostok Lab', ['alex', 'quantum computing', 'vostok_lab'], '1225-08-15', 'San Francisco', 'alex@vostok_lab.com', 'Pinnacle Tech', 'assets/alex.png', 'Known for corporate espionage                -Detected Inference Type: espionage-').
+person('Dr. Lydia Grant', 'Vostok Lab', ['lydia', 'robotics', 'vostok_lab'], '2098-06-12', 'New York', 'lydia@futuretech.com', 'CyberDynamics', 'assets/lydia.png', '').
+person('John', 'Pinnacle Tech', ['john', 'cybersecurity', 'networking'], '2092-07-03', 'London', 'john@pinnacle.com', 'NetSecure', 'assets/john.png', '').
 
 % Articles
 article('Quantum Computing Breakthrough', 'A major advancement in quantum computing has been achieved by Dr. Bob Jones.', ['quantum computing', 'breakthrough'], '').
@@ -118,7 +118,7 @@ search(Tag, Result) :-
 :- dynamic help/2.
 
 % Email History
-email_history('vostok@vostok_lab.com', '--From: 24v06nyd5hn--You must immediately cease your research or we will take drastic measures.').
+email_history('vostok@vostok_lab.com', '--From: 24v06nyd5hn--\nYou must immediately cease your research or we will take drastic measures.').
 email_history('alex@vostok_lab.com', '---From: john@pinnacle.com---\nAlex, your initiative has been noted. An additional $50,000 has been deposited into your account. Ensure the matter with Dr. Vostok is resolved swiftly by April 17th.\n--Detected Inference Type: bribe--').
 
 % Decrypted email sender identity
@@ -129,7 +129,7 @@ access_log('vostok_lab', 'Access log entry: 04/08/2152 23:47 - Unauthorized acce
 
 
 % Security footage
-security_log('04/17/2152', 'footage.mp4').
+security_log('04/17/2152', 'assets/footage.mp4').
 
 % Help command output
 help(all, 'Available Commands:\nemail_history(Email) - Email history.\ndecrypt(encrypted_text) - Decrypts text.\naccess_log(Location) - Access logs.\nsecurity_log(Date) - Provides security footage.').
